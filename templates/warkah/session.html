@@ -1,0 +1,78 @@
+
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+ 
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Session Time Out</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'warkah/vendor/bootstrap/css/bootstrap.min.css' %}">
+    <link href="{% static 'warkah/vendor/fonts/circular-std/style.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'warkah/libs/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'warkah/vendor/fonts/fontawesome/css/fontawesome-all.css' %}">
+</head>
+
+<body>
+    <!-- ============================================================== -->
+    <!-- main wrapper -->
+    <!-- ============================================================== -->
+    <div class="dashboard-main-wrapper p-0">
+        <!-- ============================================================== -->
+        <!-- wrapper  -->
+        <!-- ============================================================== -->
+        <div class="bg-light text-center">
+            <div class="container">
+                <div class="row">
+                    <div class="offset-xl-2 col-xl-8 offset-lg-2 col-lg-8 col-md-12 col-sm-12 col-12">
+                        <div class="error-section">
+                            <a href="/"><img src="{% static 'warkah/images/session-expire.jpg' %}" alt="Session expired" class="img-fluid" style="height: 540px;"></a>
+                            <div class="error-section-content">
+                                <h6 class="display-6">Maaf Waktu Santai Anda Habis</h6>
+                                <p> Untuk menggunakan aplikasi lagi, silahkan lakukan <b>Login</b> ulang.</p>
+                                <a href="/login" class="btn btn-secondary btn-lg">Log In</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- footer -->
+            <!-- ============================================================== -->
+            <div class="bg-white p-3">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-dark text-center">
+                            Copyright © <script> document.write(new Date().getFullYear()) </script> | <a href="/"> SI - WARKAH </a> | ATR / BPN NTT
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- end footer -->
+            <!-- ============================================================== -->
+            <!-- ============================================================== -->
+            <!-- end wrapper -->
+            <!-- ============================================================== -->
+            <!-- ============================================================== -->
+            <!-- end footer -->
+            <!-- ============================================================== -->
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- end main wrapper -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- end main wrapper -->
+    <!-- ============================================================== -->
+    <!-- Optional JavaScript -->
+    <script src="{% static 'warkah/vendor/jquery/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'warkah/vendor/bootstrap/js/bootstrap.bundle.js' %}"></script>
+    <script src="{% static 'warkah/vendor/slimscroll/jquery.slimscroll.js' %}"></script>
+    <script src="{% static 'warkah/libs/js/main-js.js' %}"></script>
+</body>
+ 
+</html>

@@ -1,0 +1,663 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+  	<head>
+
+		<link rel="icon" href="{% static 'warkah/images/avatar-1.png' %}" type="image/x-icon">
+
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+		<!-- Bootstrap CSS -->
+		<link rel="stylesheet" href="{% static 'warkah/vendor/bootstrap/css/bootstrap.min.css' %}">
+		<link rel="stylesheet" href="{% static 'warkah/vendor/fonts/circular-std/style.css' %}">
+		<link rel="stylesheet" href="{% static 'warkah/libs/css/style.css' %}">
+		<link rel="stylesheet" href="{% static 'warkah/vendor/fonts/fontawesome/css/fontawesome-all.css' %}">
+		<link rel="stylesheet" href="{% static 'warkah/vendor/fonts/material-design-iconic-font/css/materialdesignicons.min.css' %}">
+		<link rel="stylesheet" href="{% static 'warkah/vendor/fonts/flag-icon-css/flag-icon.min.css' %}">
+
+
+
+		<!-- CHART JS -->
+	    <script src="{% static 'warkah/chart/Chart.min.js' %}" type="text/javascript" charset="utf-8" async defer></script>
+	    <style src="{% static 'warkah/chart/Chart.min.css' %}" type="text/css" media="screen"></style>
+
+
+
+
+		{% block title %} <title> SI - WARKAH | Sistem Informasi Warkah </title> {% endblock title %}
+		
+		{% block style %}
+		{% endblock style %}
+  
+  	</head>
+
+  	<body>
+
+{% block content %}
+<!-- ============================================================== -->
+<!-- main wrapper -->
+<!-- ============================================================== -->
+<div class="dashboard-main-wrapper">
+	<!-- ============================================================== -->
+	<!-- navbar -->
+	<!-- ============================================================== -->
+	<div class="dashboard-header">
+		<nav class="navbar navbar-expand-lg bg-white fixed-top">
+			<a class="navbar-brand" href="{% url 'index_warkah' %}">SI - WARKAH</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse " id="navbarSupportedContent">
+				<ul class="navbar-nav ml-auto navbar-right-top">
+
+
+
+
+				<li class="nav-item">
+	             	<a class="nav-link" >
+					<i class="calendar alternate icon"></i>
+						{{ tgl }}
+					</a>
+                </li>
+					{% if request.session.user %}
+						<li class="nav-item dropdown nav-user">
+							<a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<img src="{% static 'warkah/images/avatar-1.png' %}" alt="" class="user-avatar-md rounded-circle">
+							</a>
+							<div class="dropdown-menu dropdown-menu-right nav-user-dropdown" aria-labelledby="navbarDropdownMenuLink2">
+								<div class="nav-user-info">
+									{% comment %} <span class="status"></span><span class="ml-1">Selamat datang</span> {% endcomment %}
+									<h5 class="mb-1 text-white nav-user-name">Halo selamat {{ request.session.say }}, {{ request.session.user }} dari {{ request.session.dept }} </h5>
+								</div>
+								<a class="dropdown-item" href="{% url 'index_mysite' %}"><i class="home icon"></i>Home</a>
+								<a class="dropdown-item" href="{% url 'akun' %}"><i class="user icon"></i>User Akun</a>
+								<a class="dropdown-item" href="{% url 'logout' %}"><i class="sign out alternate icon"></i>Keluar</a>
+							</div>
+						</li>
+					{% else %}
+						<li class="nav-item">
+							<a class="nav-link nav-icons" href="{% url 'login' %}" alt="Login">
+								<i class="fas fa-sign-in-alt fa-fw"></i>
+								<span class="indicator"></span>
+								Log In
+							</a>
+						</li>
+					{% endif %}
+
+
+
+				</ul>
+			</div>
+		</nav>
+	</div>
+	<!-- ============================================================== -->
+	<!-- end navbar -->
+	<!-- ============================================================== -->
+
+
+	<!-- ============================================================== -->
+	<!-- wrapper  -->
+	<!-- ============================================================== -->
+	<div class="dashboard-wrapper">
+		<div class="dashboard-ecommerce">
+			<div class="container-fluid dashboard-content ">
+
+
+
+				{% block page_header %}
+				<!-- ============================================================== -->
+				<!-- pageheader  -->
+				<!-- ============================================================== -->
+				<div class="row">
+					<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+						<div class="page-header">
+							<h2 class="pageheader-title">Selamat datang di aplikasi SI - WARKAH</h2>
+							<div class="page-breadcrumb">
+								<nav aria-label="breadcrumb">
+									<ol class="breadcrumb">
+										<li class="breadcrumb-item active" aria-current="page">Kantor ATR/BPN Kabupaten Ngada Nusa Tenggara Timur.</li>
+									</ol>
+								</nav>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- ============================================================== -->
+				<!-- end pageheader  -->
+				<!-- ============================================================== -->
+				{% endblock page_header %}
+
+
+
+
+			    {% block message %}
+					{% if messages %}
+					<div class="alert alert-success" role="alert" id="success-alert">
+					    {% for message in messages %}
+					  		<p class="h6">{{ message }}</p>
+					    {% endfor %}
+					</div>
+					{% endif %}
+			    {% endblock message %}
+
+
+
+
+				{% block form %}
+				<div class="ecommerce-widget">
+
+
+
+					<div class="row">
+
+						<div class="col-xl-5">
+							<div class="card">
+								<h5 class="card-header"> <i class="chart bar icon"></i> &nbsp; STATUS </h5>
+								<div class="card-body" style="height: 345px;">
+									<canvas id="chart"></canvas>
+								</div>
+							</div>
+						</div>
+
+						<!-- ============================================================== -->
+												<!-- FILTER WARKAH  -->
+						<!-- ============================================================== -->
+						<div class="col-xl-7">
+							<div class="card">
+								<h5 class="card-header"> <i class="fas fa-search"></i> &nbsp; CARI DATA WARKAH </h5>
+								<div class="card-body">
+
+								{% comment %} <form id="filter_warkah" method="post" type="submit"> {% endcomment %}
+									<div class="form-group row">
+										<label class="col-12 col-lg-3 col-form-label text-lg-right" style="color: #000"><b>Kecamatan</b></label>
+										<div class="col-12 col-lg-6 col-lg-6">
+											<select class="ui fluid search dropdown" name="kecamatan" id="kecamatan">
+
+												<option value="">Pilih Kecamatan</option>
+												{% for data in items_kec %}
+												<option value="{{ data.kode }}">{{ data.nama }}</option>
+												{% endfor %}
+
+											</select>
+										</div>
+									</div>
+
+									<div class="form-group row">
+										<label class="col-12 col-lg-3 col-form-label text-lg-right" style="color: #000"><b>Kelurahan</b></label>
+										<div class="col-12 col-lg-6 col-lg-6">
+											<select class="ui fluid search dropdown" name="kelurahan" id="kelurahan">
+
+												<option value="">Pilih Kelurahan</option>
+												{% for data in items_kel %}
+												<option value="{{ data.kode }}">{{ data.nama }}</option>
+												{% endfor %}
+
+											</select>
+										</div>
+									</div>
+
+									<div class="form-group row">
+										<label class="col-12 col-lg-3 col-form-label text-lg-right" style="color: #000"><b>Tahun</b></label>
+										<div class="col-12 col-lg-6 col-lg-6">
+											<div class="ui fluid input">
+												<input class="form-control" type="text" id="tahun" placeholder="Tahun">
+											</div>
+										</div>
+									</div>
+
+									<div class="form-group row">
+										<label class="col-12 col-lg-3 col-form-label text-lg-right" style="color: #000"><b>Nomor Berkas</b></label>
+										<div class="col-12 col-lg-6 col-lg-6">
+											<div class="ui fluid input">
+												<input class="form-control" type="text" id="no_berkas" placeholder="Nomor Berkas">
+											</div>
+										</div>
+									</div>
+
+									<div class="form-group row">
+										<label class="col-12 col-lg-3 col-form-label text-lg-right" style="color: #000"><b>Nama Subjek</b></label>
+										<div class="col-12 col-lg-6 col-lg-6">
+											<div class="ui fluid action input">
+												<input class="form-control" type="text" id="nama_subjek" placeholder="Nama Subjek">
+												<button class="ui blue icon button" id="go-btn">
+													<i class="fas fa-search"></i> &nbsp; Cari
+												</button>
+											</div>
+										</div>
+									</div>
+								{% comment %} </form> {% endcomment %}
+
+								</div>
+							</div>
+						</div>
+						<!-- ============================================================== -->
+												<!-- END FILTER WARKAH  -->
+						<!-- ============================================================== -->
+
+					</div>
+
+
+					<div class="row">
+					
+						<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+							<div class="card">
+								<h5 class="card-header"> <i class="fas fa-table"></i> &nbsp; DATA WARKAH </h5>
+								<div class="card-body">
+									
+
+								{% if request.session.user %}
+									<div class="eight wide column">
+										<div class="dt-buttons ui buttons">
+											<button class="ui green button" aria-controls="example" type="button" id="add-btn"
+													onclick="window.location='{% url 'input_warkah' %}'">
+												<i class="fas fa-plus"></i>
+												<span>Tambah</span>
+											</button>
+											<button class="ui yellow button" aria-controls="example" type="button" id="edit-btn">
+												<i class="fas fa-eraser"></i>
+												<span>Edit</span>
+											</button> 
+											<button class="ui red button" aria-controls="example" type="button" id="delete-btn" onclick="func_modal()" data-toggle="modal" data-target="#myModal">
+												<i class="fas fa-trash-alt"></i>
+												<span>Hapus</span>
+											</button>
+										</div>
+									</div>
+									&nbsp;
+								{% endif %}
+
+									<div class="col-12">
+										<table class="ui celled table" id="example">
+											<thead style="text-align: center">
+												<tr>
+													<th>Id</th>
+													<th>Kecamatan</th>
+													<th>Kelurahan</th>
+													<th>Tahun</th>
+													<th>Nomor Berkas</th>
+													<th>Nama Subjek</th>
+													<th>Lihat Warkah</th>
+												</tr>
+											</thead>
+										</table>
+									</div>
+
+
+								</div>
+							</div>
+						</div>
+
+
+					</div>
+
+
+				</div>
+                {% endblock form %}
+
+			</div>
+		</div>
+
+
+
+
+	</div>
+	<!-- ============================================================== -->
+	<!-- end wrapper  -->
+	<!-- ============================================================== -->
+</div>
+<!-- ============================================================== -->
+<!-- end main wrapper  -->
+<!-- ============================================================== -->
+{% endblock content %}
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center">
+            <div class="modal-content">
+                <div class="modal-header">
+					<h4 class="modal-title" id="myModalLabel">Hapus Data Warkah?</h4>
+                </div>
+                <div class="modal-body" id="modal_msg"></div>
+                <div class="modal-footer">
+                    <button type="button" class="ui yellow button" aria-controls="example" id="btl-btn"><i class="fas fa-times"></i>&nbsp;Batal</button>
+                    <button type="button" class="ui blue button" aria-controls="example" id="yes-btn"><i class="fas fa-check"></i>&nbsp;Ya</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END Modal -->
+
+
+
+	</body>
+
+
+{% block footer %}
+<!-- ============================================================== -->
+<!-- footer -->
+<!-- ============================================================== -->
+<div class="footer" >
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+					Copyright © <script> document.write(new Date().getFullYear()) </script> | SI - WARKAH | ATR / BPN NTT
+			</div>
+			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+				<div class="text-md-right footer-links d-none d-sm-block">
+					<a href="javascript: void(0);">About</a>
+					<a href="javascript: void(0);">Support</a>
+					<a href="javascript: void(0);">Contact Us</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- ============================================================== -->
+<!-- end footer -->
+<!-- ============================================================== -->
+{% endblock footer %}
+	  
+
+
+	<!-- Optional JavaScript -->
+	<!-- jquery 3.3.1 -->
+	<script src="{% static 'warkah/vendor/jquery/jquery-3.3.1.min.js' %}"></script>
+	<!-- bootstap bundle js -->
+	<script src="{% static 'warkah/vendor/bootstrap/js/bootstrap.bundle.js' %}"></script>
+	<!-- slimscroll js -->
+	<script src="{% static 'warkah/vendor/slimscroll/jquery.slimscroll.js' %}"></script>
+	<!-- main js -->
+	<script src="{% static 'warkah/libs/js/main-js.js' %}"></script>
+
+
+
+
+
+	<!-- ============================================================== -->
+					<!-- DATATABLE SCRIPT & CSS START -->
+	<!-- ============================================================== -->
+
+	<!-- jquery 3.3.1 js -->
+	<script src="{% static 'warkah/datatables/js/jquery-3.3.1.js' %}"></script>
+	<!-- jquery.dataTables.min js -->
+	<script src="{% static 'warkah/datatables/js/jquery.dataTables.min.js' %}"></script>
+	<!-- dataTables.semanticui.min js -->
+	<script src="{% static 'warkah/datatables/js/semantic.min.js' %}"></script>
+	<!-- semantic.min js -->
+	<script src="{% static 'warkah/datatables/js/dataTables.semanticui.min.js' %}"></script>
+	<!-- datatables.select.min js -->
+	<script src="{% static 'warkah/datatables/js/dataTables.select.min.js' %}"></script>
+
+	<!-- style semantic ui css -->
+	<link rel="stylesheet" href="{% static 'warkah/datatables/css/semantic.min.css' %}">
+	<link rel="stylesheet" href="{% static 'warkah/datatables/css/dataTables.semanticui.min.css' %}">
+	<link rel="stylesheet" href="{% static 'warkah/datatables/css/select.semanticui.min.css' %}">
+
+	<!-- ============================================================== -->
+					<!-- DATATABLE SCRIPT & CSS END -->
+	<!-- ============================================================== -->
+
+
+
+
+
+	{% block scripts %}
+	<script type="text/javascript">
+
+		$("#success-alert").fadeTo(2000, 500).slideUp(500, function() {
+	      	$("#success-alert").slideUp(1500);
+	    });
+
+		$('.ui.fluid.search.dropdown').dropdown();
+
+		var warkah_nm, warkah_no, warkah_th, warkah_kec, warkah_kel;
+
+		function func_modal() {
+			document.getElementById('modal_msg').innerHTML = 'Anda yakin ingin menghapus data warkah yang sudah dipilih?<br>\
+															<br>\
+															<div class="col-12">\
+																<div class="row">\
+																	<div class="col-4"> Nama Pemohon </div>\
+																	<div class="col-1"> = </div>\
+																	<div class="col-7"> <b>'+warkah_nm+'</b> </div>\
+																</div>\
+																<div class="row">\
+																	<div class="col-4"> No. Berkas / Tahun </div>\
+																	<div class="col-1"> = </div>\
+																	<div class="col-7"> <b>'+warkah_no+'</b> / <b>'+warkah_th+'</b>  </div>\
+																</div>\
+																<div class="row">\
+																	<div class="col-4"> Kecamatan </div>\
+																	<div class="col-1"> = </div>\
+																	<div class="col-7"> <b>'+warkah_kec+'</b> </div>\
+																</div>\
+																<div class="row">\
+																	<div class="col-4"> Kelurahan </div>\
+																	<div class="col-1"> = </div>\
+																	<div class="col-7"> <b>'+warkah_kel+'</b> </div>\
+																</div>\
+															</div>';
+		}
+
+		$(document).ready(function() {
+
+			var warkah_id;
+			$("#edit-btn, #delete-btn").attr("disabled", true);
+
+			var ChartLabels, ChartData = [];
+
+			// ----------------------------------------------------------------------
+			// CHART START
+			// ----------------------------------------------------------------------
+        	$.ajax({
+        		method : "GET",
+        		url : "{% url 'ajax_chart' %}",
+        		success: function(data){
+        			ChartLabels = data.label;
+        			ChartData = data.data;
+        			console.log(ChartLabels, ChartData);
+        			runChart();
+        		},
+        		error: function(error_data){
+        			console.log(error_data);
+        		}
+        	});
+
+			function runChart() {
+				var ctx = document.getElementById('chart');
+				var myChart = new Chart(ctx, {
+				    type: 'bar',
+				    data: {
+				        labels: ChartLabels,
+				        datasets: [{
+				            label: 'Warkah Terdata',
+				            data: ChartData,
+				            backgroundColor: [
+				                'rgba(255, 99, 132, 0.2)',
+				                'rgba(54, 162, 235, 0.2)',
+				                'rgba(255, 206, 86, 0.2)',
+				                'rgba(75, 192, 192, 0.2)',
+				                'rgba(153, 102, 255, 0.2)',
+				                'rgba(255, 159, 64, 0.2)'
+				            ],
+				            borderColor: [
+				                'rgba(255, 99, 132, 1)',
+				                'rgba(54, 162, 235, 1)',
+				                'rgba(255, 206, 86, 1)',
+				                'rgba(75, 192, 192, 1)',
+				                'rgba(153, 102, 255, 1)',
+				                'rgba(255, 159, 64, 1)'
+				            ],
+				            borderWidth: 1
+				        }]
+				    },
+				    options: {
+				    	maintainAspectRatio: false,
+				        scales: {
+				            yAxes: [{
+				                ticks: {
+				                    beginAtZero: true
+				                }
+				            }]
+				        }
+				    }
+				});
+			};
+			// ----------------------------------------------------------------------
+			// CHART START
+			// ----------------------------------------------------------------------
+
+
+
+			// ----------------------------------------------------------------------
+			// DATATABLE START
+			// ----------------------------------------------------------------------
+			var dTable = $('#example').DataTable({
+				"language": {
+								"url": "{% static 'warkah/datatables/js/indonesian.json' %}"
+							},
+				"columnDefs": [
+								{
+									"targets": [0],
+									"visible": false,
+									"searchable": false
+								}
+							],
+				"lengthMenu": [[5, 10, 25, 50], [5, 10, 25, 50]],
+				"select" : true,
+				"bInfo" : false,
+				"ajax": '{% url "ajax_table" %}',
+				"columns": [
+							{ data: "id" },
+							{ data: "kecamatan", title: "Kecamatan", width: "20%" },
+							{ data: "kelurahan", "width": "20%" },
+							{ data: "tahun", "width": "10%", className: 'text-center' },
+							{ data: "no_berkas", "width": "13%", className: 'text-center' },
+							{ data: "nama_subjek", "width": "30%" },
+
+							{
+								"mData": null,
+								"bSortable": false,
+								"mRender": function (d) {
+															return '<a href="media/' +d.document+ '" id="cetak" target="_blank">' +
+																	'<i class="fas fa-print" style="font-size: 20px"></i>' +
+																	'</a>';
+														},
+								"width": "7%", className: 'text-center'
+							},
+						],
+			});
+
+			$('#example tbody').on('click', 'tr', function() {
+				if ($(this).hasClass('selected')) {
+					$(this).removeClass('selected');
+					$("#edit-btn, #delete-btn").attr("disabled", true);
+				} else {
+					dTable.$('tr.selected').removeClass('selected');
+					$(this).addClass('selected');
+					d = dTable.row( this ).data();
+					$("#edit-btn, #delete-btn").removeAttr("disabled");
+					// $("#cetak").attr("href", "http://localhost:8080/media/" +d.document);
+					warkah_id = d.id;
+					warkah_nm = d.nama_subjek;
+					warkah_no = d.no_berkas;
+					warkah_th = d.tahun;
+					warkah_kec = d.kecamatan;
+					warkah_kel = d.kelurahan;
+				}
+			});
+			// ----------------------------------------------------------------------
+			// DATATABLE END
+			// ----------------------------------------------------------------------
+
+
+
+			// ----------------------------------------------------------------------
+			// BUTTON EDIT & HAPUS START
+			// ----------------------------------------------------------------------
+			$('#edit-btn').on('click', function() {
+				if (warkah_id) {
+					window.location='edit/'+ warkah_id;
+				} else {
+					alert('Tidak ada data.');
+				}
+			});
+			$('#btl-btn').on('click', function() {
+				window.location.reload();
+			});
+			$('#yes-btn').on('click', function() {
+				if (warkah_id) {
+					window.location='delete/'+ warkah_id;
+				} else {
+					alert('Tidak ada data.');
+				}
+			});
+			// ----------------------------------------------------------------------
+			// BUTTON EDIT & HAPUS END
+			// ----------------------------------------------------------------------
+
+
+
+			// ----------------------------------------------------------------------
+			// FILTER WARKAH START
+			// ----------------------------------------------------------------------
+			$('#go-btn').on('click', function(){
+				url = '?kec_='+ $('#kecamatan').val() +'&kel_='+ $('#kelurahan').val() +'&tahun_='+ $('#tahun').val()
+				url += '&no_berkas_='+ $('#no_berkas').val() +'&nm_subjek_='+ $('#nama_subjek').val()
+				dTable.ajax.url( 'ajax_dtbl/'+url ).load();
+			});
+			// ----------------------------------------------------------------------
+			// FILTER WARKAH END
+			// ----------------------------------------------------------------------
+
+		});
+
+	</script>
+	{% endblock scripts %}
+
+
+	{% block check_script %}
+	{% endblock check_script %}
+
+
+    {% block combo_script %}
+    <script>
+        // ----------------------------------------------------------------------
+        // COMBO BOX START
+        // ----------------------------------------------------------------------
+        var kec = $('#kecamatan').val();
+        var url = 'ajax/'+kec;
+        $.getJSON(url, function(data) {
+            $("#kelurahan option").remove();
+            for (var i=0; i<data.length; i++) {
+                $("#kelurahan").append('<option value="'+ data[i].fields['kode'] +'">'+ data[i].fields['nama'] +'</option>');
+            }
+        });
+        
+        $("#kecamatan").change(function () {
+            var kec = $('#kecamatan').val();
+            console.log(kec);
+            var url = 'ajax/'+kec;
+            $.getJSON(url, function(data) {
+                $("#kelurahan option").remove();
+                for (var i=0; i<data.length; i++) {
+                    $("#kelurahan").append('<option value="'+ data[i].fields['kode'] +'">'+ data[i].fields['nama'] +'</option>');
+                }
+            });
+        });
+        // ----------------------------------------------------------------------
+        // COMBO BOX END
+        // ----------------------------------------------------------------------
+    </script>
+    {% endblock combo_script %}
+
+
+  	</body>
+</html>

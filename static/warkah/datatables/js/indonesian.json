@@ -1,0 +1,19 @@
+
+{
+	"sEmptyTable":	 "Maaf tidak ada data yang tersedia T _ T",
+	"sProcessing":   "Sedang memproses...",
+	"sLengthMenu":   "Tampilkan  _MENU_  data",
+	"sZeroRecords":  "Maaf tidak ditemukan data yang sesuai T _ T",
+	"sInfo":         "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri data",
+	"sInfoEmpty":    "Menampilkan 0 sampai 0 dari 0 entri data",
+	"sInfoFiltered": "(disaring dari _MAX_ entri keseluruhan)",
+	"sInfoPostFix":  "",
+	"sSearch":       "Cari:",
+	"sUrl":          "",
+	"oPaginate": {
+		"sFirst":    "<i class='fas fa-fast-backward'></i>",
+		"sPrevious": "<i class='fas fa-backward'></i>",
+		"sNext":     "<i class='fas fa-forward'></i>",
+		"sLast":     "<i class='fas fa-fast-forward'></i>"
+	}
+}
