@@ -86,7 +86,7 @@ def PASARAN():
 def ajax_chart(request):
     label = Kecamatan.objects.values_list('nama', flat=True).order_by('nama')
     cursor = connection.cursor()
-    cursor.execute('select count(w.kecamatan_id) from warkah_kecamatan kec left outer join warkah_warkah w on w.kecamatan_id == kec.id \
+    cursor.execute('select count(w.kecamatan_id) from siwarkah_kecamatan kec left outer join siwarkah_warkah w on w.kecamatan_id == kec.id \
                     group by kec.nama order by kec.nama')
     data = cursor.fetchall()
 
@@ -138,9 +138,9 @@ def ajax_table(request):
     nomor   = get('no_berkas_') or ''
     nama    = get('nm_subjek_') or ''
 
-    query   = "select w.id, k.nama as kecamatan, l.nama as kelurahan, w.tahun, w.no_berkas, w.nama_subjek, w.document from warkah_warkah w \
-                join warkah_kelurahan l on w.kelurahan_id == l.id \
-                join warkah_kecamatan k on l.kecamatan_id == k.id "
+    query   = "select w.id, k.nama as kecamatan, l.nama as kelurahan, w.tahun, w.no_berkas, w.nama_subjek, w.document from siwarkah_warkah w \
+                join siwarkah_kelurahan l on w.kelurahan_id == l.id \
+                join siwarkah_kecamatan k on l.kecamatan_id == k.id "
     f = 0
 
     if kd_kec != '':
